@@ -9,6 +9,8 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
@@ -76,6 +78,15 @@ app.delete('/api/inscricoes/:id', async (req, res) => {
     res.status(200).json({ mensagem: 'Removido com sucesso!' });
   } catch (error) {
     res.status(500).json({ erro: 'Erro ao deletar' });
+  }
+});
+
+app.get('/api/coreografias', async (req, res) => {
+  try {
+    const lista = await Coreografia.find();
+    res.json(lista);
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao buscar coreografias' });
   }
 });
 

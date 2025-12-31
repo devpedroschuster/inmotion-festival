@@ -58,13 +58,29 @@ const ActionButton = styled.button`
   }
 `;
 
+const SectionTitle = styled.h3`
+  color: white; margin-top: 3rem; border-bottom: 1px solid #333; padding-bottom: 10px;
+`;
+
+const LinkButton = styled.a`
+  color: #ff4081; text-decoration: none; font-weight: bold;
+  &:hover { text-decoration: underline; }
+`;
+
 export default function AdminPanel() {
   const [inscricoes, setInscricoes] = useState([]);
+  const [coreografias, setCoreografias] = useState([]);
 
-  const carregarDados = () => {
-    fetch(`${API_URL}/inscricoes`)
-      .then(resposta => resposta.json())
+const carregarDados = () => {
+
+  fetch(`${API_URL}/inscricoes`)
+      .then(res => res.json())
       .then(dados => setInscricoes(dados))
+      .catch(erro => console.error(erro));
+
+    fetch(`${API_URL}/coreografias`)
+      .then(res => res.json())
+      .then(dados => setCoreografias(dados))
       .catch(erro => console.error(erro));
   };
 
@@ -98,34 +114,72 @@ export default function AdminPanel() {
     <Container>
       <Title>Painel do Organizador 📋</Title>
       
+      <SectionTitle>Matrículas nas Aulas</SectionTitle>
       {inscricoes.length === 0 ? (
-        <EmptyMessage>Nenhuma inscrição ainda... 🦗</EmptyMessage>
+        <p>Sem matrículas.</p>
       ) : (
         <Table>
           <thead>
             <tr>
-              <Th>Nome</Th>
-              <Th>E-mail</Th>
-              <Th>Aula</Th>
-              <Th>Ações</Th>
+              <Th>Nome</Th> <Th>Aula</Th> <Th>Ações</Th>
             </tr>
           </thead>
           <tbody>
-            {inscricoes.map((item) => (
+            {inscricoes.map(item => (
               <tr key={item._id}>
                 <Td>{item.nome}</Td>
-                <Td>{item.email}</Td>
                 <Td>{item.aula}</Td>
                 <Td>
                   <ActionButton onClick={() => handleDelete(item._id, item.nome)}>
                     Excluir 🗑️
                   </ActionButton>
+                  </Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+
+      <SectionTitle>Coreografias Submetidas 💃</SectionTitle>
+      {coreografias.length === 0 ? (
+        <p>Nenhuma coreografia enviada.</p>
+      ) : (
+        <Table>
+          <thead>
+            <tr>
+              <Th>Obra</Th>
+              <Th>Coreógrafo</Th>
+              <Th>Links</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {coreografias.map(item => (
+              <tr key={item._id}>
+                <Td>
+                  <strong>{item.nomeCoreografia}</strong><br/>
+                  <small>{item.email}</small>
+                </Td>
+                <Td>{item.coreografo}</Td>
+                <Td>
+                
+                  <LinkButton href={item.videoLink} target="_blank">
+                    Assistir Vídeo 📺
+                  </LinkButton>
+                  <br/>
+                  
+                  <LinkButton 
+                    href={`${API_URL}/${item.caminhoMusica?.replace(/\\/g, '/')}`} 
+                    target="_blank"
+                  >
+                    Baixar Música 🎵
+                  </LinkButton>
                 </Td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
+
     </Container>
   );
-}
+}  
