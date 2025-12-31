@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import API_URL from '../api';
 
 const Container = styled.div`
   padding: 4rem 2rem;
