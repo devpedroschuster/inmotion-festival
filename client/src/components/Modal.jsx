@@ -97,7 +97,7 @@ export default function Modal({ isOpen, onClose, aula }) {
       
       await new Promise(resolve => setTimeout(resolve, 500)); 
 
-      const resposta = await fetch('${API_URL}/inscrever', {
+      const resposta = await fetch(`${API_URL}/inscrever`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosInscricao),

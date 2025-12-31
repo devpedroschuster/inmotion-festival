@@ -76,7 +76,7 @@ export default function SubmissionModal({ isOpen, onClose }) {
     formData.append('musica', musicFile);
 
     try {
-      const resposta = await fetch('${API_URL}/submeter-coreografia', {
+      const resposta = await fetch(`${API_URL}/submeter-coreografia`, {
         method: 'POST',
         body: formData, 
       });

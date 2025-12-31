@@ -61,7 +61,7 @@ export default function AdminPanel() {
   const [inscricoes, setInscricoes] = useState([]);
 
   const carregarDados = () => {
-    fetch('${API_URL}/inscricoes')
+    fetch(`${API_URL}/inscricoes`)
       .then(resposta => resposta.json())
       .then(dados => setInscricoes(dados))
       .catch(erro => console.error(erro));
